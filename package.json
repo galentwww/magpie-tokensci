@@ -1,8 +1,13 @@
 {
   "name": "magpie-tokensci",
-  "version": "0.1.0",
-  "description": "Make tokens.ci price magpie's routed usage: the reply names the model that served it",
+  "version": "0.2.0",
+  "description": "Report actual Magpie models to tokens.ci and exclude their aliases from local submissions",
   "type": "module",
+  "main": "./index.mjs",
+  "bin": { "magpie-tokensci": "./cli.mjs" },
+  "engines": { "node": ">=22" },
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "dependencies": { "tokens-cli": "27.2.1" },
   "license": "MIT",
   "author": "galentwww",
   "repository": {
@@ -14,8 +19,10 @@
     "url": "https://github.com/galentwww/magpie-tokensci/issues"
   },
   "files": [
-    "served-model.middleware.js",
-    "hooks.mjs",
+    "index.mjs",
+    "cli.mjs",
+    "accounting.mjs",
+    "reporter.mjs",
     "README.md",
     "LICENSE"
   ],
@@ -28,13 +35,8 @@
   "magpie": {
     "name": "tokens.ci",
     "summary": {
-      "en": "Report magpie's routed usage to tokens.ci with the model that served it.",
-      "zh": "把 magpie 路由后的真实模型与用量报给 tokens.ci。"
-    },
-    "middleware": "./served-model.middleware.js",
-    "hooks": "./hooks.mjs",
-    "options": {
-      "mirrorAgents": []
+      "en": "Report actual gateway usage; exclude routed aliases from local submissions.",
+      "zh": "网关按真实模型上报，本机排除已由网关统计的别名。"
     }
   }
 }
