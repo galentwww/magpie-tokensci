@@ -1,0 +1,40 @@
+{
+  "name": "magpie-tokensci",
+  "version": "0.1.0",
+  "description": "Make tokens.ci price magpie's routed usage: the reply names the model that served it",
+  "type": "module",
+  "license": "MIT",
+  "author": "galentwww",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galentwww/magpie-tokensci.git"
+  },
+  "homepage": "https://github.com/galentwww/magpie-tokensci#readme",
+  "bugs": {
+    "url": "https://github.com/galentwww/magpie-tokensci/issues"
+  },
+  "files": [
+    "served-model.middleware.js",
+    "hooks.mjs",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "magpie",
+    "magpie-plugin",
+    "tokens",
+    "tokens.ci"
+  ],
+  "magpie": {
+    "name": "tokens.ci",
+    "summary": {
+      "en": "Report magpie's routed usage to tokens.ci with the model that served it.",
+      "zh": "把 magpie 路由后的真实模型与用量报给 tokens.ci。"
+    },
+    "middleware": "./served-model.middleware.js",
+    "hooks": "./hooks.mjs",
+    "options": {
+      "mirrorAgents": []
+    }
+  }
+}
