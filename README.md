@@ -42,6 +42,9 @@ magpie-tokensci login
 
 此命令使用官方 CLI 的设备码登录；远端终端显示授权链接，在本机浏览器完成即可。
 已登录的本机无需重登。也支持 `TOKENS_API_TOKEN` 环境变量。
+如果显示 `Already logged in as ...`，表示该机器已有登录，不会生成新授权码。
+0.2.0 的 npm 全局命令存在符号链接入口问题，可能无输出退出；升级到 0.2.1 修复。
+升级后先执行 `magpie-tokensci --help`，确认命令正常输出。
 凭据只从该机器的 `~/.config/tokens/credentials.json` 或 `TOKENS_CONFIG_DIR` 读取。
 不要复制本机的 `device.json`：网关在自己的状态目录创建独立设备身份。
 

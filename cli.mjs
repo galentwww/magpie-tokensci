@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+import { realpathSync } from "node:fs"
 import { parseArgs } from "node:util"
 import { resolve } from "node:path"
 import { pathToFileURL } from "node:url"
 import { defaultConfig, initialize, loadConfig, run, officialTokens, startLoop, listCallers } from "./reporter.mjs"
 
-const help = `magpie-tokensci 0.2.0
+const help = `magpie-tokensci 0.2.1
 
   init [--from YYYY-MM-DD] [--timezone Asia/Shanghai]  Create a shared partition config
   callers                                           List matching gateway caller key IDs
@@ -64,6 +65,6 @@ export async function main(args = process.argv.slice(2)) {
   } else throw new Error(`Unknown command: ${command}`)
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   main().catch(error => { console.error(error.message); process.exitCode = 1 })
 }
