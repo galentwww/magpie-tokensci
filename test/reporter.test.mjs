@@ -64,7 +64,8 @@ test("official tokens prices gateway models, local partition retains other model
   assert.equal(gateway.payload.summary.totalTokens, 2000000)
   assert.equal(gateway.payload.summary.totalCost, 5)
   assert.deepEqual(gateway.payload.summary.models.sort(), ["claude-opus-5-5", "claude-sonnet-4"])
-  assert.equal(gateway.payload.contributions[0].clients[0].client, "cc-mirror/magpie-gateway")
+  // Reported under the familiar `omp` identity the gateway serves for this user.
+  assert.equal(gateway.payload.contributions[0].clients[0].client, "omp")
   const local = await run("local", options)
   assert.equal(local.excludedTokens, 2000000)
   assert.equal(local.payload.summary.totalTokens, 1000000)

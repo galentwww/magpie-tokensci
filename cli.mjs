@@ -5,7 +5,7 @@ import { resolve } from "node:path"
 import { pathToFileURL } from "node:url"
 import { defaultConfig, initialize, loadConfig, run, officialTokens, startLoop, listCallers } from "./reporter.mjs"
 
-const help = `magpie-tokensci 0.2.1
+const help = `magpie-tokensci 0.2.2
 
   init [--from YYYY-MM-DD] [--timezone Asia/Shanghai]  Create a shared partition config
   callers                                           List matching gateway caller key IDs

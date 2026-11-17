@@ -48,8 +48,13 @@ test("repeated response IDs do not collapse distinct requests; exact ledger repl
   assert.notEqual(a.id, b.id)
   assert.equal(gatewayEvent(row({ response_id: "reused" }), config).id, a.id)
   const events = transcript([a, b]).trim().split("\n").map(JSON.parse)
-  assert.notEqual(events[0].message.id, events[1].message.id)
-  assert.equal(events[0].message.usage.cache_read_input_tokens, 300)
+  // omp identity: message records carrying camelCase usage and the served model.
+  assert.equal(events[0].type, "message")
+  assert.equal(events[0].message.role, "assistant")
+  assert.equal(events[0].message.model, "claude-opus-5-5")
+  assert.equal(events[0].message.provider, "magpie")
+  assert.notEqual(events[0].id, events[1].id)
+  assert.equal(events[0].message.usage.cacheRead, 300)
   assert.equal("callerKeyId" in events[0], false)
 })
 

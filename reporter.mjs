@@ -148,10 +148,18 @@ export async function collectGateway(config) {
     await file.sync() // Commit before any network submission.
   } finally { await file.close() }
   const home = join(root, "home")
-  const variant = join(home, ".cc-mirror", "magpie-gateway")
-  await atomicWrite(join(variant, "variant.json"), '{"name":"magpie-gateway"}\n')
-  await atomicWrite(join(variant, "config", "projects", "gateway", "usage.jsonl"),
-    transcript([...events.values()].sort((a, b) => a.timestamp.localeCompare(b.timestamp) || a.id.localeCompare(b.id))))
+  // Reported as `omp`: the gateway serves this user's own omp traffic, so the
+  // tokens.ci profile shows one familiar client instead of an unknown variant.
+  const sessions = join(home, ".omp", "agent", "sessions", "--magpie-gateway--")
+  const events2 = [...events.values()].sort((a, b) => a.timestamp.localeCompare(b.timestamp) || a.id.localeCompare(b.id))
+  if (events2.length) {
+    // omp discovers `<ISO-with-dashes>_<uuid>.jsonl`; the header id is the uuid.
+    const session = "01a1de45-6edc-703c-ae1a-18b992e63499"
+    const first = events2[0].timestamp.replace(/[:.]/g, "-")
+    await atomicWrite(join(sessions, `${first}_${session}.jsonl`),
+      JSON.stringify({ type: "session", version: 3, id: session, timestamp: events2[0].timestamp, cwd: "/magpie-gateway" }) +
+      "\n" + transcript(events2))
+  }
   const configDir = join(root, "tokens")
   await mkdir(configDir, { recursive: true, mode: 0o700 })
   // Only pricing is shared. Credentials, device IDs and client scan paths are not.
@@ -206,7 +214,7 @@ async function exportPayload(role, config, options) {
     env = { ...process.env, TZ: config.timezone, TOKENS_API_TOKEN: "preview-only" }
   }
   const args = ["submit", "--dry-run", "--json"]
-  if (role === "gateway") args.push("--client", "claude")
+  if (role === "gateway") args.push("--client", "omp")
   if (options.since) args.push("--since", options.since)
   if (options.until) args.push("--until", options.until)
   let result

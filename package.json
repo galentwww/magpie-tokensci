@@ -1,6 +1,6 @@
 {
   "name": "magpie-tokensci",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Report actual Magpie models to tokens.ci and exclude their aliases from local submissions",
   "type": "module",
   "main": "./index.mjs",

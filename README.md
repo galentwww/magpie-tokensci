@@ -16,7 +16,8 @@ OMP、Codex 是否记录回复模型名，不再影响网关统计。
 `pi` / `omp` 客户端下 `providerId=magpie` 且 `modelId=group/smart-using` 的记录。
 `google/models/gemini-4-carbon` 等其他模型继续由本机提交。
 
-网关数据通过 tokens 已支持的 `cc-mirror/magpie-gateway` 客户端格式计价和提交。
+网关数据以 `omp` 客户端身份计价和提交，与你在 tokens.ci 上看到的其他 omp 记录一致。
+它来自网关的独立设备身份，因此仍与本机扫描分开统计。
 费用是 tokens 价目表的估算，不代表订阅实际账单。未知价格保持 tokens 的结果，
 不会给自动路由组虚构一个固定价格。
 
@@ -24,7 +25,6 @@ OMP、Codex 是否记录回复模型名，不再影响网关统计。
 
 需要 Node.js 22+；Magpie 插件已在 **0.1.4250** 实测。
 包内依赖固定为 `tokens-cli@27.2.1`，不依赖 Homebrew 安装的旧 `tokens`。
-
 在远端和本机分别安装：
 
 ```sh

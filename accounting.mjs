@@ -80,10 +80,23 @@ export function gatewayEvent(row, config) {
   }
 }
 
+// omp reads `<timestamp>_<uuid>.jsonl` files whose records are
+// `{"type":"message","message":{"role":"assistant","usage":{...}}}`; the usage
+// block is camelCase. `model` is already the served model, so no alias reaches
+// pricing.
 export function transcript(events) {
   return events.map(e => JSON.stringify({
-    type: "assistant", timestamp: e.timestamp, sessionId: "magpie-gateway",
-    requestId: e.id, message: { id: e.id, model: e.model, usage: e.usage },
+    type: "message", id: e.id, parentId: null, timestamp: e.timestamp,
+    message: {
+      role: "assistant", model: e.model, provider: "magpie",
+      responseId: e.id,
+      usage: {
+        input: e.usage.input_tokens, output: e.usage.output_tokens,
+        cacheRead: e.usage.cache_read_input_tokens, cacheWrite: e.usage.cache_creation_input_tokens,
+        totalTokens: e.usage.input_tokens + e.usage.output_tokens +
+          e.usage.cache_read_input_tokens + e.usage.cache_creation_input_tokens,
+      },
+    },
   })).join("\n") + (events.length ? "\n" : "")
 }
 
